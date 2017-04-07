@@ -159,6 +159,7 @@ public abstract class MigrateServerGroupStrategy implements MigrateStrategySuppo
       deployDescription.setKeyPair(keyPair != null ? keyPair : launchConfig.getKeyName());
       deployDescription.setAssociatePublicIpAddress(launchConfig.getAssociatePublicIpAddress());
       deployDescription.setCooldown(sourceGroup.getDefaultCooldown());
+      deployDescription.setGroupMetrics(sourceGroup.getGroupMetrics());
       deployDescription.setHealthCheckGracePeriod(sourceGroup.getHealthCheckGracePeriod());
       deployDescription.setHealthCheckType(sourceGroup.getHealthCheckType());
       deployDescription.setSuspendedProcesses(sourceGroup.getSuspendedProcesses().stream()

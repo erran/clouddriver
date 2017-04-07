@@ -17,6 +17,8 @@
 package com.netflix.spinnaker.clouddriver.aws.deploy.ops
 
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsRequest
+import com.amazonaws.services.autoscaling.model.DisableMetricsCollectionRequest
+import com.amazonaws.services.autoscaling.model.EnableMetricsCollectionRequest
 import com.amazonaws.services.autoscaling.model.UpdateAutoScalingGroupRequest
 import com.netflix.spinnaker.clouddriver.aws.deploy.description.ModifyAsgDescription
 import com.netflix.spinnaker.clouddriver.aws.security.AmazonClientProvider
@@ -77,6 +79,14 @@ class ModifyAsgAtomicOperation implements AtomicOperation<Void> {
           .withHealthCheckGracePeriod(description.healthCheckGracePeriod)
           .withHealthCheckType(description.healthCheckType)
           .withTerminationPolicies(description.terminationPolicies)
+
+      if (description.groupMetrics) {
+         task.updateStatus BASE_PHASE, "Enabling Auto Scaling Group metrics for $asgName in $region..."
+         autoScaling.enableMetricsCollection(new EnableMetricsCollectionRequest().withAutoScalingGroupName(asgName))
+      } else {
+         task.updateStatus BASE_PHASE, "Disabling Auto Scaling Group metrics for $asgName in $region..."
+         autoScaling.disableMetricsCollection(new DisableMetricsCollectionRequest().withAutoScalingGroupName(asgName))
+      }
 
       autoScaling.updateAutoScalingGroup(updateRequest)
 

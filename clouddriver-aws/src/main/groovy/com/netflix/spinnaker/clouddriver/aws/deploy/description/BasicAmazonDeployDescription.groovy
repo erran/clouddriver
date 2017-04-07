@@ -36,6 +36,7 @@ class BasicAmazonDeployDescription extends AbstractAmazonCredentialsDescription 
   String keyPair
   Boolean associatePublicIpAddress
   Integer cooldown
+  Collection<String> groupMetrics
   Integer healthCheckGracePeriod
   String healthCheckType
   String spotPrice
